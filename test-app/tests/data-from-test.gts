@@ -34,6 +34,58 @@ module('dataFrom()', function (hooks) {
       assert.deepEqual(data, { firstName: 'foo' });
     });
 
+    test('works with number inputs', async function (assert) {
+      let data = {};
+
+      function handleSubmit(event: SubmitEvent) {
+        event.preventDefault();
+        data = dataFrom(event);
+      }
+
+      await render(
+        <template>
+          <form {{on "submit" handleSubmit}}>
+            <input type="number" name="page" />
+            <button type="submit">Submit</button>
+          </form>
+        </template>
+      );
+
+      await click('button');
+      assert.deepEqual(data, { page: NaN });
+
+      await fillIn('[name=page]', 2);
+      await click('button');
+      assert.deepEqual(data, { page: 2 });
+    });
+
+    test('works with date inputs', async function (assert) {
+      let data = {};
+
+      function handleSubmit(event: SubmitEvent) {
+        event.preventDefault();
+        data = dataFrom(event);
+      }
+
+      await render(
+        <template>
+          <form {{on "submit" handleSubmit}}>
+            <input type="date" name="when" />
+            <button type="submit">Submit</button>
+          </form>
+        </template>
+      );
+
+      await click('button');
+      assert.deepEqual(data, { when: null });
+
+      let now = new Date(Date.UTC(2024, 4, 4));
+
+      await fillIn('[name=when]', "2024-05-04");
+      await click('button');
+      assert.deepEqual(data, { when: now });
+    });
+
     test('works with checkboxes', async function (assert) {
       let data = {};
 

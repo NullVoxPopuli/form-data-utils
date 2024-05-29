@@ -4,13 +4,9 @@
     "src/**/*",
     "unpublished-development-types/**/*"
   ],
-  "glint": {
-    "environment": ["ember-loose", "ember-template-imports"]
-  },
   "compilerOptions": {
     "allowJs": true,
     "declarationDir": "declarations",
-    "emitDeclarationOnly": true,
     /**
       https://www.typescriptlang.org/tsconfig#noEmit
 
