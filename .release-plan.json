@@ -1,0 +1,17 @@
+{
+  "solution": {
+    "form-data-utils": {
+      "impact": "minor",
+      "oldVersion": "0.0.0",
+      "newVersion": "0.1.0",
+      "constraints": [
+        {
+          "impact": "minor",
+          "reason": "Appears in changelog section :rocket: Enhancement"
+        }
+      ],
+      "pkgJSONPath": "./form-data-utils/package.json"
+    }
+  },
+  "description": "## Release (2024-05-29)\n\nform-data-utils 0.1.0 (minor)\n\n#### :rocket: Enhancement\n* `form-data-utils`, `test-app`\n  * [#6](https://github.com/NullVoxPopuli/form-data-utils/pull/6) Add input type number and date support  ([@NullVoxPopuli](https://github.com/NullVoxPopuli))\n\n#### :house: Internal\n* `test-app`\n  * [#5](https://github.com/NullVoxPopuli/form-data-utils/pull/5) Update references to new package name ([@NullVoxPopuli](https://github.com/NullVoxPopuli))\n\n#### Committers: 1\n- [@NullVoxPopuli](https://github.com/NullVoxPopuli)\n"
+}
