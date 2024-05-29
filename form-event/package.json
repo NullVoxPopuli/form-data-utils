@@ -1,5 +1,5 @@
 {
-  "name": "form-event",
+  "name": "form-data-utils",
   "type": "module",
   "version": "0.0.0",
   "description": "A set of utilities for working with FormData",
@@ -11,13 +11,13 @@
     "utils",
     "forms"
   ],
-  "repository": "",
+  "repository": "https://github.com/NullVoxPopuli/form-data-utils",
   "license": "MIT",
   "author": "NullVoxPopuli",
   "exports": {
     ".": {
       "types": "./declarations/index.d.ts",
-      "default": "./dist/index.js"
+      "import": "./dist/index.js"
     }
   },
   "typesVersions": {
@@ -35,12 +35,11 @@
     "build": "vite build",
     "lint": "concurrently 'pnpm:lint:*(!fix)' --names 'lint:'",
     "lint:fix": "concurrently 'pnpm:lint:*:fix' --names 'fix:'",
-    "lint:hbs": "ember-template-lint . --no-error-on-unmatched-pattern",
-    "lint:hbs:fix": "ember-template-lint . --fix --no-error-on-unmatched-pattern",
     "lint:js": "eslint . --cache",
     "lint:js:fix": "eslint . --fix",
-    "lint:types": "tsc --noEmit",
+    "lint:types": "tsc --noEmit --emitDeclarationOnly false",
     "lint:package": "publint .",
+    "lint:published-types": "attw . --pack --ignore-rules cjs-resolves-to-esm",
     "prepack": "pnpm build"
   },
   "devDependencies": {

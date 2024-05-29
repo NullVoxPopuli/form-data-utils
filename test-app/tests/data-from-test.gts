@@ -3,7 +3,7 @@ import { click, fillIn, render, select as choose } from '@ember/test-helpers';
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
 
-import { dataFrom } from 'form-data';
+import { dataFrom } from 'form-data-utils';
 
 module('dataFrom()', function (hooks) {
   setupRenderingTest(hooks);

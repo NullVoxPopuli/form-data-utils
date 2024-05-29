@@ -10,6 +10,7 @@
   "compilerOptions": {
     "allowJs": true,
     "declarationDir": "declarations",
+    "emitDeclarationOnly": true,
     /**
       https://www.typescriptlang.org/tsconfig#noEmit
 
