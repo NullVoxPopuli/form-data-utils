@@ -1,5 +1,5 @@
 type FormDataEntryValue = NonNullable<ReturnType<FormData['get']>>;
-type Data = { [key: string]: FormDataEntryValue | string[] };
+type Data = { [key: string]: FormDataEntryValue | string[] | number | Date | null };
 
 /**
  * A utility function for extracting the FormData as an object
@@ -15,7 +15,7 @@ export function dataFrom(
    */
   event: { currentTarget: EventTarget | null },
 ): {
-  [name: string]: FormDataEntryValue | string[];
+  [name: string]: FormDataEntryValue | string[] | number | Date | null;
 } {
   if (!event) {
     throw new Error(`Cannot call dataFrom with no event`);
@@ -31,11 +31,7 @@ export function dataFrom(
   const formData = new FormData(form);
   const data: Data = Object.fromEntries(formData.entries());
 
-  // Gather fields from the form, and set any missing
-  // values to undefined.
-  const fields = form.querySelectorAll('input,select');
-
-  for (const field of fields) {
+  for (const field of form.elements) {
     const name = field.getAttribute('name');
 
     // The field is probably invalid
@@ -50,7 +46,11 @@ export function dataFrom(
     // clicked will beb available
     if (field instanceof HTMLSelectElement) {
       handleSelect(field, data);
+    } else if (field instanceof HTMLInputElement) {
+      handleInput(field, data);
     }
+
+
   }
 
   return data;
@@ -68,5 +68,25 @@ function handleSelect(field: HTMLSelectElement, data: Data) {
     }
 
     data[field.name] = values;
+  }
+}
+
+function handleInput(field: HTMLInputElement, data: Data) {
+  /**
+    * By default, all input values are strings.
+    * But with type=number, we can use a different API to get the
+    * actual numerical value.
+    */
+  switch (field.type) {
+    case 'number': {
+      data[field.name] = field.valueAsNumber;
+
+      break;
+    }
+    case 'date': {
+      data[field.name] = field.valueAsDate;
+
+      break;
+    }
   }
 }
