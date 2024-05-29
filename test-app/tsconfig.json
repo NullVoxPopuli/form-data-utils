@@ -9,6 +9,9 @@
       "test-app/tests/*": ["tests/*"],
       "test-app/*": ["app/*"],
       "*": ["types/*"]
-    }
+    },
+    "types": [
+      "ember-source/types"
+    ]
   }
 }
