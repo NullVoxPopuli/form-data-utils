@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "projectName": "form-event",
+  "projectName": "form-data-utils",
   "packages": [
     {
       "name": "@embroider/addon-blueprint",

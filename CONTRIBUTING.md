@@ -3,7 +3,7 @@
 ## Installation
 
 - `git clone <repository-url>`
-- `cd form-event`
+- `cd form-data-utils`
 - `pnpm install`
 
 ## Linting
@@ -13,7 +13,7 @@
 
 ## Building the addon
 
-- `cd form-event`
+- `cd form-data-utils`
 - `pnpm build`
 
 ## Running tests
