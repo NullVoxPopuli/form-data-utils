@@ -1,5 +1,16 @@
 # Changelog
 
+## Release (2024-05-30)
+
+form-data-utils 0.2.0 (minor)
+
+#### :rocket: Enhancement
+* `form-data-utils`, `test-app`
+  * [#8](https://github.com/NullVoxPopuli/form-data-utils/pull/8) Pass the submitter so that we get the submit button value as well (if available) ([@NullVoxPopuli](https://github.com/NullVoxPopuli))
+
+#### Committers: 1
+- [@NullVoxPopuli](https://github.com/NullVoxPopuli)
+
 ## Release (2024-05-29)
 
 form-data-utils 0.1.0 (minor)
