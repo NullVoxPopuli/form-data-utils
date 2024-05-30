@@ -2,6 +2,21 @@
 
 ## Release (2024-05-30)
 
+form-data-utils 0.3.0 (minor)
+
+#### :rocket: Enhancement
+* `form-data-utils`, `test-app`
+  * [#9](https://github.com/NullVoxPopuli/form-data-utils/pull/9) Support checkbox arrays ([@NullVoxPopuli](https://github.com/NullVoxPopuli))
+
+#### :house: Internal
+* `form-data-utils`
+  * [#11](https://github.com/NullVoxPopuli/form-data-utils/pull/11) Remove more unused dependencies, config ([@NullVoxPopuli](https://github.com/NullVoxPopuli))
+
+#### Committers: 1
+- [@NullVoxPopuli](https://github.com/NullVoxPopuli)
+
+## Release (2024-05-30)
+
 form-data-utils 0.2.0 (minor)
 
 #### :rocket: Enhancement
