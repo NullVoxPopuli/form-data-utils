@@ -10,11 +10,12 @@ Each input within your `<form>` should have a `name` attribute.
 (or else the `<form>` element doesn't know what inputs are relevant)
 
 This will provide values for all types of controls/fields,
-- input: text, checkbox, radio, etc
+- input: text, checkbox (and checkbox arrays), radio, etc
 - select
   - behavior is fixed from browser default behavior, where
     only the most recently selected value comes through in
     the FormData. This fix only affects `<select multiple>`
+- submitter (the button/etc that causes the form to submit (if it has a name attribute))    
 
 ## Installation
 
@@ -25,12 +26,12 @@ npm add form-data-utils
 ## Usage
 
 ```gjs
-import { dataFromEvent } from 'form-data-utils';
+import { dataFrom } from 'form-data-utils';
 
 function handleSubmit(event) {
   event.preventDefault();
 
-  let obj = dataFromEvent(event);
+  let obj = dataFrom(event);
   //  ^ { firstName: "NVP", isHuman: "", }
 }
 
@@ -44,6 +45,8 @@ function handleSubmit(event) {
       Are you a human?
       <input type="checkbox" name="isHuman" value="nah" />
     </label>
+
+    <button type="submit">Submit</button>
   </form>
 </template>
 ```
