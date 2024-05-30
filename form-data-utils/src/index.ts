@@ -42,42 +42,54 @@ export function dataFrom(
 
     const hasSubmitted = name in data;
 
+    // Default to empty string, because 
+    // by default FormData does not include fields
+    // that were not checked 
     if (!hasSubmitted) data[name] = '';
 
     // If the field is a `select`, we need to better
     // handle the value, since only the most recently
-    // clicked will beb available
+    // clicked will be available
     if (field instanceof HTMLSelectElement) {
       if (field.hasAttribute('multiple')) {
         data[field.name] = formData.getAll(field.name);
       }
     } else if (field instanceof HTMLInputElement) {
-      handleInput(field, data);
+      const _related = form.querySelectorAll(`[name="${name}"]`)
+      const related = [..._related] as unknown[] as HTMLInputElement[];
+
+      if (!(related.every(x => x instanceof HTMLInputElement))) {
+        throw new Error(`Every element with name ${name} must be an input`);
+      }
+
+      const hasMultipleValues = related.length > 1;
+
+      /**
+        * By default, all input values are strings.
+        * But with type=number, we can use a different API to get the
+        * actual numerical value.
+        */
+      switch (field.type) {
+        case 'number': {
+          data[field.name] = field.valueAsNumber;
+
+          break;
+        }
+        case 'date': {
+          data[field.name] = field.valueAsDate;
+
+          break;
+        }
+        case 'checkbox': {
+          // TODO: do multiple field types need to support arrays like this?
+          if (hasMultipleValues) {
+            data[field.name] = related.filter(x => x.checked).map(x => x.value);
+          }
+        }
+      }
     }
-
-
   }
 
   return data;
 }
 
-
-function handleInput(field: HTMLInputElement, data: Data) {
-  /**
-    * By default, all input values are strings.
-    * But with type=number, we can use a different API to get the
-    * actual numerical value.
-    */
-  switch (field.type) {
-    case 'number': {
-      data[field.name] = field.valueAsNumber;
-
-      break;
-    }
-    case 'date': {
-      data[field.name] = field.valueAsDate;
-
-      break;
-    }
-  }
-}
