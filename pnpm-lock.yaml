@@ -4,9 +4,6 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
-overrides:
-  '@types/eslint': ^7.0.0
-
 importers:
 
   .:
@@ -38,12 +35,6 @@ importers:
       '@babel/eslint-parser':
         specifier: ^7.24.6
         version: 7.24.6(@babel/core@7.24.6)(eslint@8.57.0)
-      '@babel/plugin-transform-typescript':
-        specifier: ^7.23.6
-        version: 7.24.6(@babel/core@7.24.6)
-      '@babel/runtime':
-        specifier: ^7.17.0
-        version: 7.24.6
       '@nullvoxpopuli/eslint-configs':
         specifier: ^4.0.0
         version: 4.0.0(@babel/core@7.24.6)(@babel/eslint-parser@7.24.6)(@typescript-eslint/eslint-plugin@7.11.0)(@typescript-eslint/parser@7.11.0)(eslint-config-prettier@9.1.0)(eslint-plugin-ember@12.1.1)(eslint@8.57.0)(prettier@3.2.5)(typescript@5.4.5)
@@ -2603,7 +2594,7 @@ packages:
     resolution: {integrity: sha512-F5z53uvRIF4dYfFfJP3a2Cqg+4P1dgJchJsFnsZE0eZp0LK8X7g2J0CsJHRgns+skpXOlM7n5vFGwkWCWj8qJg==}
     engines: {node: 12.* || >= 14}
     dependencies:
-      '@types/eslint': 7.29.0
+      '@types/eslint': 8.56.10
       find-up: 5.0.0
       fs-extra: 9.1.0
       proper-lockfile: 4.1.2
@@ -3322,6 +3313,13 @@ packages:
 
   /@types/eslint@7.29.0:
     resolution: {integrity: sha512-VNcvioYDH8/FxaeTKkM4/TiTwt6pBV9E3OfGmvaw8tPl0rrHCJ4Ll15HRT+pMiFAf/MLQvAzC+6RzUMEL9Ceng==}
+    dependencies:
+      '@types/estree': 1.0.5
+      '@types/json-schema': 7.0.15
+    dev: true
+
+  /@types/eslint@8.56.10:
+    resolution: {integrity: sha512-Shavhk87gCtY2fhXDctcfS3e6FdxWkCx1iUZ9eEUbh7rTqlZT0/IzOkCOVt0fCjcFuZ9FPYfuezTBImfHCDBGQ==}
     dependencies:
       '@types/estree': 1.0.5
       '@types/json-schema': 7.0.15
@@ -7257,7 +7255,7 @@ packages:
     resolution: {integrity: sha512-C9GCVAs4Eq7ZC/XFQHITLiHJxQngdtraXaM+LoUFoFp/lHNl2Zn8f3WQbe9HvTBBQ9YnKFB0/2Ajdqwo5D1EAw==}
     engines: {node: ^14.18.0 || >=16.0.0}
     peerDependencies:
-      '@types/eslint': ^7.0.0
+      '@types/eslint': '>=8.0.0'
       eslint: '>=8.0.0'
       eslint-config-prettier: '*'
       prettier: '>=3.0.0'

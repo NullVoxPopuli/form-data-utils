@@ -46,8 +46,6 @@
     "@arethetypeswrong/cli": "^0.15.3",
     "@babel/core": "^7.23.6",
     "@babel/eslint-parser": "^7.24.6",
-    "@babel/plugin-transform-typescript": "^7.23.6",
-    "@babel/runtime": "^7.17.0",
     "@nullvoxpopuli/eslint-configs": "^4.0.0",
     "@tsconfig/ember": "^3.0.2",
     "@typescript-eslint/eslint-plugin": "^7.11.0",
