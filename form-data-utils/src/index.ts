@@ -1,5 +1,5 @@
 type FormDataEntryValue = NonNullable<ReturnType<FormData['get']>>;
-type Data = { [key: string]: FormDataEntryValue | string[] | number | Date | null };
+type Data = { [key: string]: FormDataEntryValue[] | FormDataEntryValue | string[] | number | Date | null };
 
 /**
  * A utility function for extracting the FormData as an object
@@ -13,9 +13,12 @@ export function dataFrom(
    * Each input within your `<form>` should have a `name` attribute.
    * (or else the `<form>` element doesn't know what inputs are relevant)
    */
-  event: { currentTarget: EventTarget | null },
+  event: {
+    currentTarget: EventTarget | null,
+    submitter?: HTMLElement | null | undefined
+  },
 ): {
-  [name: string]: FormDataEntryValue | string[] | number | Date | null;
+  [name: string]: FormDataEntryValue[] | FormDataEntryValue | string[] | number | Date | null;
 } {
   if (!event) {
     throw new Error(`Cannot call dataFrom with no event`);
@@ -28,7 +31,7 @@ export function dataFrom(
   }
 
   const form = event.currentTarget;
-  const formData = new FormData(form);
+  const formData = new FormData(form, event.submitter);
   const data: Data = Object.fromEntries(formData.entries());
 
   for (const field of form.elements) {
@@ -45,7 +48,9 @@ export function dataFrom(
     // handle the value, since only the most recently
     // clicked will beb available
     if (field instanceof HTMLSelectElement) {
-      handleSelect(field, data);
+      if (field.hasAttribute('multiple')) {
+        data[field.name] = formData.getAll(field.name);
+      }
     } else if (field instanceof HTMLInputElement) {
       handleInput(field, data);
     }
@@ -56,20 +61,6 @@ export function dataFrom(
   return data;
 }
 
-function handleSelect(field: HTMLSelectElement, data: Data) {
-  if (field.hasAttribute('multiple')) {
-    const options = field.querySelectorAll('option');
-    const values = [];
-
-    for (const option of options) {
-      if (option.selected) {
-        values.push(option.value);
-      }
-    }
-
-    data[field.name] = values;
-  }
-}
 
 function handleInput(field: HTMLInputElement, data: Data) {
   /**
