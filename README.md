@@ -31,7 +31,7 @@ function handleSubmit(event) {
   event.preventDefault();
 
   let obj = dataFromEvent(event);
-  //  ^ { firstName: NVP, isHuman: "", }
+  //  ^ { firstName: "NVP", isHuman: "", }
 }
 
 <template>
