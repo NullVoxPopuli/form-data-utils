@@ -115,6 +115,37 @@ module('dataFrom()', function (hooks) {
       assert.deepEqual(data, { isHuman: '' });
     });
 
+    test('works with checkboxes with the same name', async function (assert) {
+      let data = {};
+
+      function handleSubmit(event: SubmitEvent) {
+        event.preventDefault();
+        data = dataFrom(event);
+      }
+
+      await render(
+        <template>
+          <form {{on "submit" handleSubmit}}>
+            <input type="checkbox" name="day" value="Monday" />
+            <input type="checkbox" name="day" value="Tuesday" />
+            <input type="checkbox" name="day" value="Wednesday" />
+            <button type="submit">Submit</button>
+          </form>
+        </template>
+      );
+
+      await click('button');
+      assert.deepEqual(data, { day: [] });
+
+      await click('[value=Monday]');
+      await click('button');
+      assert.deepEqual(data, { day: ['Monday'] });
+
+      await click('[value=Tuesday]');
+      await click('button');
+      assert.deepEqual(data, { day: ['Monday', 'Tuesday'] });
+    });
+
     test('checkboxes can have a custom value', async function (assert) {
       let data = {};
 
