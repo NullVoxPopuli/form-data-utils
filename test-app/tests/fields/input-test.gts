@@ -86,6 +86,33 @@ module('dataFrom()', function (hooks) {
       assert.deepEqual(data, { when: now });
     });
 
+    test('works with datetime-local inputs', async function (assert) {
+      let data = {};
+
+      function handleSubmit(event: SubmitEvent) {
+        event.preventDefault();
+        data = dataFrom(event);
+      }
+
+      await render(
+        <template>
+          <form {{on "submit" handleSubmit}}>
+            <input type="datetime-local" name="when" />
+            <button type="submit">Submit</button>
+          </form>
+        </template>
+      );
+
+      await click('button');
+      assert.deepEqual(data, { when: null });
+
+      let now = new Date(Date.UTC(2024, 4, 4, 12, 13));
+
+      await fillIn('[name=when]', "2024-05-04T12:13");
+      await click('button');
+      assert.deepEqual(data, { when: now });
+    });
+
     test('works with checkboxes', async function (assert) {
       let data = {};
 

@@ -42,9 +42,9 @@ export function dataFrom(
 
     const hasSubmitted = name in data;
 
-    // Default to empty string, because 
+    // Default to empty string, because
     // by default FormData does not include fields
-    // that were not checked 
+    // that were not checked
     if (!hasSubmitted) data[name] = '';
 
     // If the field is a `select`, we need to better
@@ -77,6 +77,15 @@ export function dataFrom(
         }
         case 'date': {
           data[field.name] = field.valueAsDate;
+
+          break;
+        }
+        case 'datetime-local': {
+          // datetime-local inputs do not have a `valueAsDate`, but they do have a `valueAsNumber`
+          // which is the number of milliseconds since January 1, 1970, UTC
+          // - to mimic input[type="date"], we return null when input is not filled (`valueAsNumber` is NaN)
+          // - when `valueAsNumber` is a number, we create a new date with its value
+          data[field.name] = isNaN(field.valueAsNumber) ? null : new Date(field.valueAsNumber);
 
           break;
         }
