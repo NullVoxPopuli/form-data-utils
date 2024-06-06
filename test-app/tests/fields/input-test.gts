@@ -59,6 +59,33 @@ module('dataFrom()', function (hooks) {
       assert.deepEqual(data, { page: 2 });
     });
 
+    test('works with range inputs', async function (assert) {
+      let data = {};
+
+      function handleSubmit(event: SubmitEvent) {
+        event.preventDefault();
+        data = dataFrom(event);
+      }
+
+      await render(
+        <template>
+          <form {{on "submit" handleSubmit}}>
+            <input type="range" name="page" />
+            <button type="submit">Submit</button>
+          </form>
+        </template>
+      );
+
+      await click('button');
+      // range inputs do not support empty (NaN) values like number inputs do
+      // not specifying an explicit value will default to value 50
+      assert.deepEqual(data, { page: 50 });
+
+      await fillIn('[name=page]', 2);
+      await click('button');
+      assert.deepEqual(data, { page: 2 });
+    });
+
     test('works with date inputs', async function (assert) {
       let data = {};
 
