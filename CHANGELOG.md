@@ -1,5 +1,17 @@
 # Changelog
 
+## Release (2024-06-06)
+
+form-data-utils 0.4.0 (minor)
+
+#### :rocket: Enhancement
+* `form-data-utils`, `test-app`
+  * [#14](https://github.com/NullVoxPopuli/form-data-utils/pull/14) support datetime-local inputs ([@miguelcobain](https://github.com/miguelcobain))
+  * [#13](https://github.com/NullVoxPopuli/form-data-utils/pull/13) support range inputs ([@miguelcobain](https://github.com/miguelcobain))
+
+#### Committers: 1
+- Miguel Andrade ([@miguelcobain](https://github.com/miguelcobain))
+
 ## Release (2024-05-30)
 
 form-data-utils 0.3.0 (minor)
