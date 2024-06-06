@@ -2,20 +2,16 @@
   "solution": {
     "form-data-utils": {
       "impact": "minor",
-      "oldVersion": "0.2.0",
-      "newVersion": "0.3.0",
+      "oldVersion": "0.3.0",
+      "newVersion": "0.4.0",
       "constraints": [
         {
           "impact": "minor",
           "reason": "Appears in changelog section :rocket: Enhancement"
-        },
-        {
-          "impact": "patch",
-          "reason": "Appears in changelog section :house: Internal"
         }
       ],
       "pkgJSONPath": "./form-data-utils/package.json"
     }
   },
-  "description": "## Release (2024-05-30)\n\nform-data-utils 0.3.0 (minor)\n\n#### :rocket: Enhancement\n* `form-data-utils`, `test-app`\n  * [#9](https://github.com/NullVoxPopuli/form-data-utils/pull/9) Support checkbox arrays ([@NullVoxPopuli](https://github.com/NullVoxPopuli))\n\n#### :house: Internal\n* `form-data-utils`\n  * [#11](https://github.com/NullVoxPopuli/form-data-utils/pull/11) Remove more unused dependencies, config ([@NullVoxPopuli](https://github.com/NullVoxPopuli))\n\n#### Committers: 1\n- [@NullVoxPopuli](https://github.com/NullVoxPopuli)\n"
+  "description": "## Release (2024-06-06)\n\nform-data-utils 0.4.0 (minor)\n\n#### :rocket: Enhancement\n* `form-data-utils`, `test-app`\n  * [#14](https://github.com/NullVoxPopuli/form-data-utils/pull/14) support datetime-local inputs ([@miguelcobain](https://github.com/miguelcobain))\n  * [#13](https://github.com/NullVoxPopuli/form-data-utils/pull/13) support range inputs ([@miguelcobain](https://github.com/miguelcobain))\n\n#### Committers: 1\n- Miguel Andrade ([@miguelcobain](https://github.com/miguelcobain))\n"
 }
