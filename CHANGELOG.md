@@ -2,6 +2,17 @@
 
 ## Release (2024-06-06)
 
+form-data-utils 0.4.1 (patch)
+
+#### :bug: Bug Fix
+* `form-data-utils`
+  * [#16](https://github.com/NullVoxPopuli/form-data-utils/pull/16) Support loose type checking ([@NullVoxPopuli](https://github.com/NullVoxPopuli))
+
+#### Committers: 1
+- [@NullVoxPopuli](https://github.com/NullVoxPopuli)
+
+## Release (2024-06-06)
+
 form-data-utils 0.4.0 (minor)
 
 #### :rocket: Enhancement
