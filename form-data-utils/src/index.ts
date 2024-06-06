@@ -42,9 +42,9 @@ export function dataFrom(
 
     const hasSubmitted = name in data;
 
-    // Default to empty string, because 
+    // Default to empty string, because
     // by default FormData does not include fields
-    // that were not checked 
+    // that were not checked
     if (!hasSubmitted) data[name] = '';
 
     // If the field is a `select`, we need to better
@@ -70,7 +70,8 @@ export function dataFrom(
         * actual numerical value.
         */
       switch (field.type) {
-        case 'number': {
+        case 'number':
+        case 'range': {
           data[field.name] = field.valueAsNumber;
 
           break;
