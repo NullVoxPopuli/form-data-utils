@@ -81,6 +81,15 @@ export function dataFrom(
 
           break;
         }
+        case 'datetime-local': {
+          // datetime-local inputs do not have a `valueAsDate`, but they do have a `valueAsNumber`
+          // which is the number of milliseconds since January 1, 1970, UTC
+          // - to mimic input[type="date"], we return null when input is not filled (`valueAsNumber` is NaN)
+          // - when `valueAsNumber` is a number, we create a new date with its value
+          data[field.name] = isNaN(field.valueAsNumber) ? null : new Date(field.valueAsNumber);
+
+          break;
+        }
         case 'checkbox': {
           // TODO: do multiple field types need to support arrays like this?
           if (hasMultipleValues) {
