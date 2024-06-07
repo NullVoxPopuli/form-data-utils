@@ -1,5 +1,5 @@
 import { on } from '@ember/modifier';
-import { click, fillIn, render } from '@ember/test-helpers';
+import { click, fillIn, render, triggerEvent } from '@ember/test-helpers';
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
 
@@ -138,6 +138,66 @@ module('dataFrom()', function (hooks) {
       await fillIn('[name=when]', "2024-05-04T12:13");
       await click('button');
       assert.deepEqual(data, { when: now });
+    });
+
+
+    test('works with file inputs (single)', async function (assert) {
+      let data = {};
+
+      function handleSubmit(event: SubmitEvent) {
+        event.preventDefault();
+        data = dataFrom(event);
+      }
+
+      await render(
+        <template>
+          <form {{on "submit" handleSubmit}}>
+            <input type="file" name="pdf" />
+            <button type="submit">Submit</button>
+          </form>
+        </template>
+      );
+
+      await click('button');
+      assert.deepEqual(data, { pdf: null });
+
+      const file = new File(["File contents here"], "file-to-upload.txt");
+
+      await triggerEvent('[name=pdf]', 'change', {
+        files: [file],
+      });
+      await click('button');
+      assert.deepEqual(data, { pdf: file });
+    });
+
+    test('works with file inputs (multiple)', async function (assert) {
+      let data = {};
+
+      function handleSubmit(event: SubmitEvent) {
+        event.preventDefault();
+        data = dataFrom(event);
+      }
+
+      await render(
+        <template>
+          <form {{on "submit" handleSubmit}}>
+            <input type="file" name="pdfs" multiple />
+            <button type="submit">Submit</button>
+          </form>
+        </template>
+      );
+
+      await click('button');
+      assert.deepEqual(data, { pdfs: [] });
+
+      const file1 = new File(["File contents here"], "file-to-upload.txt");
+      const file2 = new File(["File contents here 2"], "file-to-upload-2.txt");
+
+      await triggerEvent('[name=pdfs]', 'change', {
+        files: [file1, file2],
+      });
+      await click('button');
+      assert.deepEqual(data, { pdfs: [file1, file2] });
     });
 
     test('works with checkboxes', async function (assert) {

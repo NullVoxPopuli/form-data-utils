@@ -1,5 +1,5 @@
 type FormDataEntryValue = NonNullable<ReturnType<FormData['get']>>;
-type Data = { [key: string]: FormDataEntryValue[] | FormDataEntryValue | string[] | number | Date | null };
+type Data = { [key: string]: FormDataEntryValue[] | FormDataEntryValue | string[] | number | Date | File | File[] | null };
 
 /**
  * A utility function for extracting the FormData as an object
@@ -17,9 +17,7 @@ export function dataFrom(
     currentTarget: EventTarget | null,
     submitter?: HTMLElement | null | undefined
   },
-): {
-  [name: string]: FormDataEntryValue[] | FormDataEntryValue | string[] | number | Date | null;
-} {
+): Data {
   if (!event) {
     throw new Error(`Cannot call dataFrom with no event`);
   }
@@ -95,6 +93,17 @@ export function dataFrom(
           if (hasMultipleValues) {
             data[field.name] = related.filter(x => x.checked).map(x => x.value);
           }
+
+          break;
+        }
+        case 'file': {
+          if (field.files && field.files.length > 0) {
+            data[field.name] = field.multiple ? Array.from(field.files) : field.files[0] || null;
+          } else {
+            data[field.name] = field.multiple ? [] : null;
+          }
+
+          break;
         }
       }
     }
