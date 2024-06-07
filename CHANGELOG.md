@@ -1,5 +1,16 @@
 # Changelog
 
+## Release (2024-06-07)
+
+form-data-utils 0.5.0 (minor)
+
+#### :rocket: Enhancement
+* `form-data-utils`, `test-app`
+  * [#18](https://github.com/NullVoxPopuli/form-data-utils/pull/18) support file inputs ([@miguelcobain](https://github.com/miguelcobain))
+
+#### Committers: 1
+- Miguel Andrade ([@miguelcobain](https://github.com/miguelcobain))
+
 ## Release (2024-06-06)
 
 form-data-utils 0.4.1 (patch)

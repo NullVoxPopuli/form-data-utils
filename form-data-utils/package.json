@@ -1,7 +1,7 @@
 {
   "name": "form-data-utils",
   "type": "module",
-  "version": "0.4.1",
+  "version": "0.5.0",
   "description": "A set of utilities for working with FormData",
   "keywords": [
     "FormData",
