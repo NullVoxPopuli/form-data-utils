@@ -1,5 +1,5 @@
 type FormDataEntryValue = NonNullable<ReturnType<FormData['get']>>;
-type Data = { [key: string]: FormDataEntryValue[] | FormDataEntryValue | string[] | number | Date | File | FileList | null };
+type Data = { [key: string]: FormDataEntryValue[] | FormDataEntryValue | string[] | number | Date | File | File[] | null };
 
 /**
  * A utility function for extracting the FormData as an object
@@ -98,7 +98,7 @@ export function dataFrom(
         }
         case 'file': {
           if (field.files && field.files.length > 0) {
-            data[field.name] = field.multiple ? field.files : field.files[0] || null;
+            data[field.name] = field.multiple ? Array.from(field.files) : field.files[0] || null;
           } else {
             data[field.name] = field.multiple ? [] : null;
           }
