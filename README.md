@@ -10,7 +10,7 @@ Each input within your `<form>` should have a `name` attribute.
 (or else the `<form>` element doesn't know what inputs are relevant)
 
 This will provide values for all types of controls/fields,
-- input: text, checkbox (and checkbox arrays), radio, etc
+- input: text, checkbox (and checkbox arrays), radio, file, range, etc
 - select
   - behavior is fixed from browser default behavior, where
     only the most recently selected value comes through in
