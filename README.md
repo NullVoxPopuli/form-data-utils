@@ -68,14 +68,14 @@ After setting a value with `setValue`, that value will be considered by the `dat
 For example, in [Ember.js](https://emberjs.com/), you would use these functions in a modifier that you can then apply to elements.
 
 ```gjs
-import { dataFrom, deleteValue as formDeleteValue,setValue as formSetValue } from 'form-data-utils';
+import { dataFrom, deleteValue, setValue } from 'form-data-utils';
 import { modifier } from 'ember-modifier';
 
 // define the ember specific modifier
-const setValue = modifier((element, [value]) => {
-  formSetValue(element, value);
+const associateValue = modifier((element, [value]) => {
+  setValue(element, value);
 
-  return () => formDeleteValue(element);
+  return () => deleteValue(element);
 });
 
 function handleSubmit(event) {
@@ -89,7 +89,7 @@ function handleSubmit(event) {
   <form onsubmit={{handleSubmit}}>
     {{#each users as |user|}}
       <div>
-        <input type="radio" name="admin" value={{user.id}} {{setValue user}} />
+        <input type="radio" name="admin" value={{user.id}} {{associateValue user}} />
         <label for={{user.id}}>{{user.name}}</label>
       </div>
     {{/each}}
@@ -98,7 +98,7 @@ function handleSubmit(event) {
       <option value=""></option>
 
       {{#each users as |user|}}
-        <option value={{user.id}} {{setValue user}}>{{user.name}}</option>
+        <option value={{user.id}} {{associateValue user}}>{{user.name}}</option>
       {{/each}}
     </select>
 
