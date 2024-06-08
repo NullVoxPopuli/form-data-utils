@@ -2,8 +2,8 @@
   "solution": {
     "form-data-utils": {
       "impact": "minor",
-      "oldVersion": "0.4.1",
-      "newVersion": "0.5.0",
+      "oldVersion": "0.5.0",
+      "newVersion": "0.6.0",
       "constraints": [
         {
           "impact": "minor",
@@ -13,5 +13,5 @@
       "pkgJSONPath": "./form-data-utils/package.json"
     }
   },
-  "description": "## Release (2024-06-07)\n\nform-data-utils 0.5.0 (minor)\n\n#### :rocket: Enhancement\n* `form-data-utils`, `test-app`\n  * [#18](https://github.com/NullVoxPopuli/form-data-utils/pull/18) support file inputs ([@miguelcobain](https://github.com/miguelcobain))\n\n#### Committers: 1\n- Miguel Andrade ([@miguelcobain](https://github.com/miguelcobain))\n"
+  "description": "## Release (2024-06-08)\n\nform-data-utils 0.6.0 (minor)\n\n#### :rocket: Enhancement\n* `form-data-utils`, `test-app`\n  * [#21](https://github.com/NullVoxPopuli/form-data-utils/pull/21) [Breaking]: normalize values, support non-primitive values, docs ([@miguelcobain](https://github.com/miguelcobain))\n\n#### Committers: 1\n- Miguel Andrade ([@miguelcobain](https://github.com/miguelcobain))\n"
 }
