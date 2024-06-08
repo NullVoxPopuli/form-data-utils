@@ -133,7 +133,7 @@ Another thing that `form-data-utils` does is to normalize the types of the value
 | `<input type="checkbox"` with `value` |  `GivenValueType`     | `null`             |
 | multiple `<input type="checkbox"` with same `name` without `value` |  `boolean[]`        |  `[]`             |
 | multiple `<input type="checkbox"` with same `name` with `value` |  `GivenValueType[]`        |  `[]`             |
-| `<input type="radio"` | `boolean`        | `false`             |
+| `<input type="radio"` without `value` | `boolean`        | `false`             |
 | `<input type="radio"` with `value` |  `GivenValueType`      | `null`             |
 | `<select` |  `GivenValueType`        | `null`             |
 | `<select multiple` |  `GivenValueType[]`      | `[]`             |
