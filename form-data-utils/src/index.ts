@@ -1,5 +1,5 @@
 type FormDataEntryValue = NonNullable<ReturnType<FormData['get']>>;
-type Data = { [key: string]: FormDataEntryValue[] | FormDataEntryValue | string[] | number | Date | File | File[] | null };
+type Data = { [key: string]: FormDataEntryValue[] | FormDataEntryValue | string[] | number | Date | File | File[] | unknown | unknown[] | null };
 
 /**
  * A utility function for extracting the FormData as an object
@@ -40,21 +40,22 @@ export function dataFrom(
 
     const hasSubmitted = name in data;
 
-    // Default to empty string, because
-    // by default FormData does not include fields
-    // that were not checked
-    if (!hasSubmitted) data[name] = '';
+    // Default to null, because by default FormData does not include fields
+    // that were not checked. We exclude buttons, because their value should only
+    // be added if they're pressed.
+    if (!hasSubmitted && !(field instanceof HTMLButtonElement)) data[name] = null;
 
     // If the field is a `select`, we need to better
     // handle the value, since only the most recently
     // clicked will be available
     if (field instanceof HTMLSelectElement) {
-      if (field.hasAttribute('multiple')) {
-        data[field.name] = formData.getAll(field.name);
-      }
+      data[field.name] = getSelectValue(field);
+    } else if (field instanceof HTMLButtonElement && hasSubmitted) {
+      // normalize empty valued buttons to null. Only consider buttons that were submitted (default forms behavior)
+      data[field.name] = field.value || null;
     } else if (field instanceof HTMLInputElement) {
       const _related = form.querySelectorAll(`[name="${name}"]`)
-      const related = [..._related] as unknown[] as HTMLInputElement[];
+      const related = Array.from(_related) as HTMLInputElement[];
 
       if (!(related.every(x => x instanceof HTMLInputElement))) {
         throw new Error(`Every element with name ${name} must be an input`);
@@ -64,13 +65,12 @@ export function dataFrom(
 
       /**
         * By default, all input values are strings.
-        * But with type=number, we can use a different API to get the
-        * actual numerical value.
+        * So we need to normalize the types returned to the user.
         */
       switch (field.type) {
         case 'number':
         case 'range': {
-          data[field.name] = field.valueAsNumber;
+          data[field.name] = isNaN(field.valueAsNumber) ? null : field.valueAsNumber;
 
           break;
         }
@@ -89,10 +89,24 @@ export function dataFrom(
           break;
         }
         case 'checkbox': {
-          // TODO: do multiple field types need to support arrays like this?
           if (hasMultipleValues) {
-            data[field.name] = related.filter(x => x.checked).map(x => x.value);
+            data[field.name] = related.filter(x => x.checked).map(x => getRadioCheckboxValue(x));
+          } else {
+            data[field.name] = getRadioCheckboxValue(field);
           }
+
+          break;
+        }
+        case 'radio': {
+          let radio: HTMLInputElement | undefined;
+
+          if (hasMultipleValues) {
+            radio = related.find(x => x.checked);
+          } else {
+            radio = field;
+          }
+
+          data[field.name] = radio ? getRadioCheckboxValue(radio) : null;
 
           break;
         }
@@ -112,3 +126,79 @@ export function dataFrom(
   return data;
 }
 
+function getSelectValue(field: HTMLSelectElement) {
+  return field.multiple ? getMultipleSelectValue(field) : getSingleSelectValue(field);
+}
+
+function getSingleSelectValue(field: HTMLSelectElement) {
+  // avoid looping if we know nothing is selected
+  if (field.selectedIndex === -1) return null;
+
+  let optionValue: unknown = null;
+
+  for (let opt of field.options) {
+    if (!opt.disabled && opt.selected) {
+      optionValue = getOptionValue(opt);
+    }
+  }
+
+  return optionValue;
+}
+
+function getMultipleSelectValue(field: HTMLSelectElement) {
+  // avoid looping if we know nothing is selected
+  if (field.selectedIndex === -1) return [];
+
+  let optionValues: unknown[] = [];
+
+  for (let opt of field.options) {
+    if (!opt.disabled && opt.selected && opt.value !== '') {
+      optionValues.push(getOptionValue(opt));
+    }
+  }
+
+  return optionValues;
+}
+
+function getOptionValue(opt: HTMLOptionElement) {
+  if (!opt.disabled && opt.selected) {
+    // we normalize empty string to null
+    if (opt.value === '') return null;
+
+    return getValue(opt) || opt.value;
+  }
+}
+
+function getRadioCheckboxValue(el: HTMLInputElement) {
+  if (el.disabled) return;
+
+  // if radio or checkbox were not supplied any value, we assume the user wants a boolean
+  // el.getAttribute('value') returns null when value is not supplied (el.value returns 'on', so we can't use it)
+  const isValueDefined = el.getAttribute('value') !== null || getValue(el);
+
+  if (!el.disabled) {
+    if (!isValueDefined) return getValue(el) || el.checked;
+
+    if (el.checked) {
+      return getValue(el) || el.value;
+    } else {
+      return null;
+    }
+  }
+}
+
+// utils to allow setting non-primitive values
+
+const values: WeakMap<Element, unknown> = new WeakMap();
+
+export function setValue(element: HTMLElement, value: unknown) {
+  values.set(element, value);
+}
+
+export function deleteValue(element: HTMLElement) {
+  return values.delete(element);
+}
+
+function getValue(element: HTMLElement) {
+  return values.get(element);
+}
