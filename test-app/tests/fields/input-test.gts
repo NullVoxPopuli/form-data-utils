@@ -3,7 +3,14 @@ import { click, fillIn, render, triggerEvent } from '@ember/test-helpers';
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
 
-import { dataFrom } from 'form-data-utils';
+import { modifier } from 'ember-modifier';
+import { dataFrom, deleteValue as formDeleteValue,setValue as formSetValue } from 'form-data-utils';
+
+const setValue = modifier((element, [value]) => {
+  formSetValue(element, value);
+
+  return () => formDeleteValue(element);
+});
 
 module('dataFrom()', function (hooks) {
   setupRenderingTest(hooks);
@@ -52,7 +59,7 @@ module('dataFrom()', function (hooks) {
       );
 
       await click('button');
-      assert.deepEqual(data, { page: NaN });
+      assert.deepEqual(data, { page: null });
 
       await fillIn('[name=page]', 2);
       await click('button');
@@ -218,18 +225,50 @@ module('dataFrom()', function (hooks) {
       );
 
       await click('button');
-      assert.deepEqual(data, { isHuman: '' });
+      assert.deepEqual(data, { isHuman: false });
 
       await click('[name=isHuman]');
       await click('button');
-      assert.deepEqual(data, { isHuman: 'on' });
+      assert.deepEqual(data, { isHuman: true });
 
       await click('[name=isHuman]');
       await click('button');
-      assert.deepEqual(data, { isHuman: '' });
+      assert.deepEqual(data, { isHuman: false });
     });
 
-    test('works with checkboxes with the same name', async function (assert) {
+    // this is a bit of a weird use case, but it's supportted nonetheless
+    test('works with checkboxes with the same name without value', async function (assert) {
+      let data = {};
+
+      function handleSubmit(event: SubmitEvent) {
+        event.preventDefault();
+        data = dataFrom(event);
+      }
+
+      await render(
+        <template>
+          <form {{on "submit" handleSubmit}}>
+            <input type="checkbox" name="day" id="checkbox-1" />
+            <input type="checkbox" name="day" id="checkbox-2" />
+            <input type="checkbox" name="day" id="checkbox-3" />
+            <button type="submit">Submit</button>
+          </form>
+        </template>
+      );
+
+      await click('button');
+      assert.deepEqual(data, { day: [] });
+
+      await click('#checkbox-1');
+      await click('button');
+      assert.deepEqual(data, { day: [true] });
+
+      await click('#checkbox-2');
+      await click('button');
+      assert.deepEqual(data, { day: [true, true] });
+    });
+
+    test('works with checkboxes with the same name with value', async function (assert) {
       let data = {};
 
       function handleSubmit(event: SubmitEvent) {
@@ -278,7 +317,7 @@ module('dataFrom()', function (hooks) {
       );
 
       await click('button');
-      assert.deepEqual(data, { isHuman: '' });
+      assert.deepEqual(data, { isHuman: null });
 
       await click('[name=isHuman]');
       await click('button');
@@ -286,7 +325,7 @@ module('dataFrom()', function (hooks) {
 
       await click('[name=isHuman]');
       await click('button');
-      assert.deepEqual(data, { isHuman: '' });
+      assert.deepEqual(data, { isHuman: null });
     });
 
     test('works with radios', async function (assert) {
@@ -305,7 +344,7 @@ module('dataFrom()', function (hooks) {
               <legend>Select a maintenance drone:</legend>
 
               <div>
-                <input type="radio" id="huey" name="drone" value="huey" checked />
+                <input type="radio" id="huey" name="drone" />
                 <label for="huey">Huey</label>
               </div>
 
@@ -325,7 +364,7 @@ module('dataFrom()', function (hooks) {
       );
 
       await click('button');
-      assert.deepEqual(data, { drone: 'huey' });
+      assert.deepEqual(data, { drone: null });
 
       await click('[value=dewey]');
       await click('button');
@@ -335,5 +374,116 @@ module('dataFrom()', function (hooks) {
       await click('button');
       assert.deepEqual(data, { drone: 'louie' });
     });
+
+    test('works with radios (using setValue)', async function (assert) {
+      let data = {};
+
+      const users = [
+        { id: 1, name: 'Sam' },
+        { id: 2, name: 'Chris' },
+        { id: 3, name: 'Dan' }
+      ];
+
+      function handleSubmit(event: SubmitEvent) {
+        event.preventDefault();
+        data = dataFrom(event);
+      }
+
+      await render(
+        <template>
+          <form {{on "submit" handleSubmit}}>
+            <fieldset>
+              <legend>Select a maintenance drone:</legend>
+
+              {{#each users as |user|}}
+                <div>
+                  <input type="radio" id="user-{{user.id}}" name="user" {{setValue user}} />
+                  <label for={{user.id}}>{{user.name}}</label>
+                </div>
+              {{/each}}
+            </fieldset>
+            <button type="submit">Submit</button>
+          </form>
+        </template>
+      );
+      await click('button');
+      assert.deepEqual(data, { user: null });
+
+      await click('#user-2');
+      await click('button');
+      assert.deepEqual(data, { user: users[1] });
+
+      await click('#user-3');
+      await click('button');
+      assert.deepEqual(data, { user: users[2] });
+    });
+  });
+
+  test('works with checkboxes (using setValue)', async function (assert) {
+    let data = {};
+
+    let option = { id: 1, name: 'Sam' };
+
+    function handleSubmit(event: SubmitEvent) {
+      event.preventDefault();
+      data = dataFrom(event);
+    }
+
+    await render(
+      <template>
+        <form {{on "submit" handleSubmit}}>
+          <input type="checkbox" name="isHuman" {{setValue option}}/>
+          <button type="submit">Submit</button>
+        </form>
+      </template>
+    );
+
+    await click('button');
+    assert.deepEqual(data, { isHuman: null });
+
+    await click('[name=isHuman]');
+    await click('button');
+    assert.deepEqual(data, { isHuman: option });
+
+    await click('[name=isHuman]');
+    await click('button');
+    assert.deepEqual(data, { isHuman: null });
+  });
+
+  test('works with checkboxes with the same name (using setValue)', async function (assert) {
+    let data = {};
+
+    const users = [
+      { id: 1, name: 'Sam' },
+      { id: 2, name: 'Chris' },
+      { id: 3, name: 'Dan' }
+    ];
+
+    function handleSubmit(event: SubmitEvent) {
+      event.preventDefault();
+      data = dataFrom(event);
+    }
+
+    await render(
+      <template>
+        <form {{on "submit" handleSubmit}}>
+          {{#each users as |user|}}
+            <input type="checkbox" name="day" id="user-{{user.id}}" {{setValue user}} />
+          {{/each}}
+          <button type="submit">Submit</button>
+        </form>
+      </template>
+    );
+
+    await click('button');
+    assert.deepEqual(data, { day: [] });
+
+    await click('#user-2');
+    await click('button');
+    assert.deepEqual(data, { day: [users[1]] });
+
+    await click('#user-3');
+    await click('button');
+    assert.deepEqual(data, { day: [users[1], users[2]] });
   });
 });

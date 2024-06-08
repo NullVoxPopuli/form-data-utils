@@ -27,10 +27,10 @@ module('dataFrom()', function (hooks) {
       );
 
       await click('button[name=one]');
-      assert.deepEqual(data, { one: '', two: '' });
+      assert.deepEqual(data, { one: null });
 
       await click('button[name=two]');
-      assert.deepEqual(data, { one: '', two: 'second' });
+      assert.deepEqual(data, { two: 'second' });
     });
   });
 });
