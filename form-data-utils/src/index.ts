@@ -176,15 +176,13 @@ function getRadioCheckboxValue(el: HTMLInputElement) {
   // el.getAttribute('value') returns null when value is not supplied (el.value returns 'on', so we can't use it)
   const isValueDefined = el.getAttribute('value') !== null || getValue(el);
 
-  if (!el.disabled) {
-    if (!isValueDefined) return getValue(el) || el.checked;
+  if (!isValueDefined) return getValue(el) || el.checked;
 
-    if (el.checked) {
-      return getValue(el) || el.value;
-    } else {
-      return null;
-    }
+  if (el.checked) {
+    return getValue(el) || el.value;
   }
+
+  return null;
 }
 
 // utils to allow setting non-primitive values
