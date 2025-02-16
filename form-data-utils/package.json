@@ -49,11 +49,11 @@
     "@babel/eslint-parser": "^7.24.6",
     "@nullvoxpopuli/eslint-configs": "^4.0.0",
     "@tsconfig/ember": "^3.0.2",
-    "@typescript-eslint/eslint-plugin": "^7.11.0",
-    "@typescript-eslint/parser": "^7.11.0",
-    "concurrently": "^8.2.2",
-    "eslint": "^8.56.0",
-    "eslint-config-prettier": "^9.1.0",
+    "@typescript-eslint/eslint-plugin": "^8.0.0",
+    "@typescript-eslint/parser": "^8.0.0",
+    "concurrently": "^9.0.0",
+    "eslint": "^9.0.0",
+    "eslint-config-prettier": "^10.0.0",
     "eslint-plugin-ember": "^12.1.1",
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-n": "^17.7.0",
@@ -61,8 +61,8 @@
     "prettier": "^3.1.1",
     "publint": "^0.2.8",
     "typescript": "^5.3.3",
-    "vite": "^5.2.12",
-    "vite-plugin-dts": "^3.9.1"
+    "vite": "^6.0.0",
+    "vite-plugin-dts": "^4.0.0"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
