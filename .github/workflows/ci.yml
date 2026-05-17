@@ -18,7 +18,7 @@ jobs:
     timeout-minutes: 10
 
     steps:
-      - uses: wyvox/action@v1
+      - uses: wyvox/action@v2
       - run: pnpm build
       - run: pnpm lint
 
@@ -28,6 +28,6 @@ jobs:
     timeout-minutes: 10
 
     steps:
-      - uses: wyvox/action@v1
+      - uses: wyvox/action@v2
       - run: pnpm build
       - run: pnpm test
